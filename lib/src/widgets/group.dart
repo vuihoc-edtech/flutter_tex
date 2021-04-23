@@ -27,10 +27,16 @@ class TeXViewGroup extends TeXViewWidget {
 
   final bool single;
 
+  final String? lastSelectedId;
+
+  final List<String>? selectedIds;
+
   const TeXViewGroup(
       {this.id,
       required this.children,
       required this.onTap,
+      this.lastSelectedId,
+      this.selectedIds,
       this.style,
       this.selectedItemStyle,
       this.normalItemStyle})
@@ -41,6 +47,8 @@ class TeXViewGroup extends TeXViewWidget {
       {this.id,
       required this.children,
       required this.onItemsSelection,
+      this.lastSelectedId,
+      this.selectedIds,
       this.style,
       this.selectedItemStyle,
       this.normalItemStyle})
@@ -67,6 +75,8 @@ class TeXViewGroup extends TeXViewWidget {
   Map toJson() => {
         'meta': meta().toJson(),
         'data': this.children.map((child) => child.toJson()).toList(),
+        'lastSelectedId': this.lastSelectedId,
+        'selectedIds': this.selectedIds,
         'single': this.single,
         'style': this.style?.initStyle() ?? teXViewDefaultStyle,
         'selectedItemStyle':
