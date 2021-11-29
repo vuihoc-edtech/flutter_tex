@@ -65,8 +65,8 @@ Basically it's a flutter dart wrapper around the most powerful JavaScript librar
 
 ```yaml
 dependencies:
-  flutter_tex: ^4.0.0``` 
-
+  flutter_tex: ^4.0.3+1
+``` 
 
 **2:** You can install packages from the command line:
 
@@ -81,13 +81,17 @@ Alternatively, your editor might support flutter packages get. Check the docs fo
 
 ### Android
 Make sure to add this line `android:usesCleartextTraffic="true"` in your `<project-directory>/android/app/src/main/AndroidManifest.xml` under `application` like this.
+
 ```xml
 <application
+       ...
+       ...
        android:usesCleartextTraffic="true">
 </application>
 ```
 
 It completely works offline, without internet connection, but these are required permissions to work properly:
+
 
 ```xml
     <uses-permission android:name="android.permission.INTERNET" />
@@ -99,6 +103,7 @@ It'll still work in debug mode without permissions, but it won't work in release
 
 ### iOS
 Add following code in your `<project-directory>/ios/Runner/Info.plist`
+
 ```plist
 <key>NSAppTransportSecurity</key>
   <dict>
@@ -108,7 +113,8 @@ Add following code in your `<project-directory>/ios/Runner/Info.plist`
 ```
 
 ### Web
-For Web support you need to put `<script src="assets/packages/flutter_tex/js/flutter_tex.js"></script>` and `<script type="text/javascript">window.flutterWebRenderer = "html";</script>` in `<head>` tag of your `<project-directory>/web/index.html` like this.
+For Web support you need to put `<script src="assets/packages/flutter_tex/js/flutter_tex.js"></script>` and `<script type="text/javascript">window.flutterWebRenderer = "canvaskit";</script>` in `<head>` tag of your `<project-directory>/web/index.html` like this.
+
 ```html
 <head>
   
@@ -116,7 +122,7 @@ For Web support you need to put `<script src="assets/packages/flutter_tex/js/flu
     <title>Flutter TeX</title>
 
     <script src="assets/packages/flutter_tex/js/flutter_tex.js"></script>
-    <script type="text/javascript">window.flutterWebRenderer = "html";</script>
+    <script type="text/javascript">window.flutterWebRenderer = "canvaskit";</script>
 </head>
 ```
 
@@ -131,6 +137,7 @@ import 'package:flutter_tex/flutter_tex.dart';
 # Examples
 
 ### Quick Example
+
 ```dart
 TeXView(
     child: TeXViewColumn(children: [
