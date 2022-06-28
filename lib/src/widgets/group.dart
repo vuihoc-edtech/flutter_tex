@@ -5,8 +5,6 @@ import 'package:flutter_tex/src/models/widget_meta.dart';
 import 'package:flutter_tex/src/utils/style_utils.dart';
 
 class TeXViewGroup extends TeXViewWidget {
-  final String? id;
-
   /// A list of [TeXViewWidget].
   final List<TeXViewGroupItem> children;
 
@@ -32,8 +30,7 @@ class TeXViewGroup extends TeXViewWidget {
   final List<String>? selectedIds;
 
   const TeXViewGroup(
-      {this.id,
-      required this.children,
+      {required this.children,
       required this.onTap,
       this.lastSelectedId,
       this.selectedIds,
@@ -44,8 +41,7 @@ class TeXViewGroup extends TeXViewWidget {
         single = true;
 
   const TeXViewGroup.multipleSelection(
-      {this.id,
-      required this.children,
+      {required this.children,
       required this.onItemsSelection,
       this.lastSelectedId,
       this.selectedIds,
@@ -57,17 +53,18 @@ class TeXViewGroup extends TeXViewWidget {
 
   @override
   TeXViewWidgetMeta meta() {
-    return TeXViewWidgetMeta(
-        tag: 'div', classList: 'tex-view-group', node: Node.InternalChildren);
+    return const TeXViewWidgetMeta(
+        tag: 'div', classList: 'tex-view-group', node: Node.internalChildren);
   }
 
   @override
-  void onTapManager(String id) {
+  void onTapCallback(String id) {
     if (single) {
-      for (TeXViewGroupItem child in this.children)
-        if (child.id == id) this.onTap!(id);
+      for (TeXViewGroupItem child in children) {
+        if (child.id == id) onTap!(id);
+      }
     } else {
-      this.onItemsSelection!((jsonDecode(id) as List<dynamic>).cast<String>());
+      onItemsSelection!((jsonDecode(id) as List<dynamic>).cast<String>());
     }
   }
 
@@ -80,8 +77,7 @@ class TeXViewGroup extends TeXViewWidget {
         'single': this.single,
         'style': this.style?.initStyle() ?? teXViewDefaultStyle,
         'selectedItemStyle':
-            this.selectedItemStyle?.initStyle() ?? teXViewDefaultStyle,
-        'normalItemStyle':
-            this.normalItemStyle?.initStyle() ?? teXViewDefaultStyle,
+            selectedItemStyle?.initStyle() ?? teXViewDefaultStyle,
+        'normalItemStyle': normalItemStyle?.initStyle() ?? teXViewDefaultStyle,
       };
 }
