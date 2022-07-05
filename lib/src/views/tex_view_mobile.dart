@@ -38,7 +38,7 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
               _controller = controller;
             },
             initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
-            backgroundColor: Colors.transparent,
+            // backgroundColor: Colors.transparent,
             allowsInlineMediaPlayback: true,
             javascriptChannels: {
               JavascriptChannel(
