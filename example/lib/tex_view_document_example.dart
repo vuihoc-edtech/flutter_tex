@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 
 class TeXExample {
@@ -75,36 +74,29 @@ class TeXExample {
             \end{array}} \right)p^k q^{n - k} 
      $$
 
-           <details>
-  <summary>Hint</summary>
-     <p>     
-        Some explanation TeX ..
-     </p>
-</details> 
-
     </p>""");
 
   static TeXViewWidget _teXViewWidget(String title, String body) {
     return TeXViewColumn(
-        style: TeXViewStyle(
+        style: const TeXViewStyle(
             margin: TeXViewMargin.all(10),
             padding: TeXViewPadding.all(10),
             borderRadius: TeXViewBorderRadius.all(10),
             border: TeXViewBorder.all(TeXViewBorderDecoration(
                 borderWidth: 2,
-                borderStyle: TeXViewBorderStyle.Groove,
+                borderStyle: TeXViewBorderStyle.groove,
                 borderColor: Colors.green))),
         children: [
           TeXViewDocument(title,
-              style: TeXViewStyle(
+              style: const TeXViewStyle(
                   padding: TeXViewPadding.all(10),
                   borderRadius: TeXViewBorderRadius.all(10),
-                  textAlign: TeXViewTextAlign.Center,
+                  textAlign: TeXViewTextAlign.center,
                   width: 250,
                   margin: TeXViewMargin.zeroAuto(),
                   backgroundColor: Colors.green)),
           TeXViewDocument(body,
-              style: TeXViewStyle(margin: TeXViewMargin.only(top: 10)))
+              style: const TeXViewStyle(margin: TeXViewMargin.only(top: 10)))
         ]);
   }
 }
@@ -112,15 +104,16 @@ class TeXExample {
 class TeXViewDocumentExamples extends StatelessWidget {
   final TeXViewRenderingEngine renderingEngine;
 
-  TeXViewDocumentExamples(
-      {this.renderingEngine = const TeXViewRenderingEngine.katex()});
+  const TeXViewDocumentExamples(
+      {Key? key, this.renderingEngine = const TeXViewRenderingEngine.katex()})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("TeXViewDocument"),
+        title: const Text("TeXViewDocument"),
       ),
       body: TeXView(
         renderingEngine: renderingEngine,
@@ -133,31 +126,25 @@ class TeXViewDocumentExamples extends StatelessWidget {
           TeXExample.bohrRadius,
           TeXExample.chemistryEquations,
           TeXExample.matrix,
+          TeXViewDetails(
+            title: "sdfsdfsdsd",
+            style: const TeXViewStyle(backgroundColor: Colors.amber),
+            body: TeXExample.matrix,
+          ),
           if (renderingEngine.name == 'mathjax') ...[TeXExample.others]
         ]),
-        style: TeXViewStyle(
+        style: const TeXViewStyle(
           margin: TeXViewMargin.all(10),
           elevation: 10,
           borderRadius: TeXViewBorderRadius.all(25),
           border: TeXViewBorder.all(
             TeXViewBorderDecoration(
                 borderColor: Colors.blue,
-                borderStyle: TeXViewBorderStyle.Solid,
+                borderStyle: TeXViewBorderStyle.solid,
                 borderWidth: 5),
           ),
           backgroundColor: Colors.white,
         ),
-        // loadingWidgetBuilder: (context) => Center(
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     mainAxisSize: MainAxisSize.min,
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: <Widget>[
-        //       CircularProgressIndicator(),
-        //       Text("Rendering...")
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }
