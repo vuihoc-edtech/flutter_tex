@@ -1,11 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:flutter_tex/src/utils/core_utils.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
-  WebViewPlusController? _controller;
+  late WebViewControllerPlus _controller;
 
   double _height = minHeight;
   String? _lastData;
@@ -15,10 +15,46 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    _controller = WebViewControllerPlus()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Color(Colors.transparent.value))
+      ..loadFlutterAssetServer(
+          "packages/flutter_tex/js/${widget.renderingEngine?.name ?? 'katex'}/index.html")
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (String url) {
+            _pageLoaded = true;
+            _initTeXView();
+          },
+        ),
+      )
+      ..setOnConsoleMessage((message) {
+        if (kDebugMode) {
+          print(message);
+        }
+      })
+      ..addJavaScriptChannel('OnTapCallback', onMessageReceived: (jm) {
+        widget.child.onTapCallback(jm.message);
+      })
+      ..addJavaScriptChannel('TeXViewRenderedCallback',
+          onMessageReceived: (jm) async {
+        double height = double.parse(jm.message);
+        if (_height != height) {
+          setState(() {
+            _height = height;
+          });
+        }
+        widget.onRenderFinished?.call(height);
+      });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     updateKeepAlive();
-    _buildTeXView();
+    _initTeXView();
     return IndexedStack(
       index: widget.loadingWidgetBuilder?.call(context) != null
           ? _height == minHeight
@@ -28,51 +64,27 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
       children: <Widget>[
         SizedBox(
           height: _height,
-          child: WebViewPlus(
-            onPageFinished: (message) {
-              _pageLoaded = true;
-              _buildTeXView();
-            },
-            initialUrl:
-                "packages/flutter_tex/js/${widget.renderingEngine?.name ?? 'katex'}/index.html",
-            onWebViewCreated: (controller) {
-              this._controller = controller;
-            },
-            javascriptChannels: jsChannels(),
-            javascriptMode: JavascriptMode.unrestricted,
+          child: WebViewWidget(
+            controller: _controller,
           ),
         ),
-        widget.loadingWidgetBuilder?.call(context) ?? SizedBox.shrink()
+        widget.loadingWidgetBuilder?.call(context) ?? const SizedBox.shrink()
       ],
     );
   }
 
-  Set<JavascriptChannel> jsChannels() {
-    return Set.from([
-      JavascriptChannel(
-          name: 'TeXViewRenderedCallback',
-          onMessageReceived: (_) async {
-            double height = await _controller!.getHeight();
-            if (this._height != height)
-              setState(() {
-                this._height = height;
-              });
-            widget.onRenderFinished?.call(height);
-          }),
-      JavascriptChannel(
-          name: 'OnTapCallback',
-          onMessageReceived: (jm) {
-            widget.child.onTapManager(jm.message);
-          })
-    ]);
+  @override
+  void dispose() {
+    _controller.server.close();
+    super.dispose();
   }
 
-  void _buildTeXView() {
-    if (_pageLoaded && _controller != null && getRawData(widget) != _lastData) {
+  void _initTeXView() {
+    if (_pageLoaded && getRawData(widget) != _lastData) {
       if (widget.loadingWidgetBuilder != null) _height = minHeight;
-      _controller!.webViewController.runJavascript(
-          "var jsonData = " + getRawData(widget) + ";initView(jsonData);");
-      this._lastData = getRawData(widget);
+      _controller
+          .runJavaScriptReturningResult("initView(${getRawData(widget)})");
+      _lastData = getRawData(widget);
     }
   }
 }

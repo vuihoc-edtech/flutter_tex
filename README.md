@@ -4,28 +4,39 @@
 <img src="https://raw.githubusercontent.com/shah-xad/flutter_tex/master/example/assets/flutter_tex_banner.png" alt=""/>
 
 # Contents
-* [About](#about)
-* [Demo Video](#demo-video)
-* [Screenshots](#screenshots)
-* [How to use?](#how-to-use)
-   * [Android](#android)
-   * [iOS](#ios)
-   * [Web](#web)    
-* [Examples](#examples)
-    * [Quick Example](#quick-example)
-    * [TeXView Document](#texview-document-example)
-    * [TeXView Markdown](#texview-markdown-example)
-    * [TeXView Quiz](#texview-quiz-example)
-    * [TeXView Custom Fonts](#texview-custom-fonts-example)
-    * [TeXView Image and Video](#texview-image-and-video-example)
-    * [TeXView InkWell](#texview-inkwell-example)
-    * [Complete Example](#complete-example)
-* [Demo Application](#application-demo)
-* [Demo Web](#web-demo)
-* [Api Changes](#api-changes)
-* [Api Usage](#api-usage)
-* [Todo](#to-do)
-* [Cautions](#cautions)
+- [flutter\_tex](#flutter_tex)
+- [Contents](#contents)
+- [About](#about)
+- [How it works?](#how-it-works)
+- [Demo Video](#demo-video)
+  - [Click to Watch Demo on Youtube](#click-to-watch-demo-on-youtube)
+- [Screenshots](#screenshots)
+- [How to use?](#how-to-use)
+    - [Android](#android)
+    - [iOS](#ios)
+    - [Web](#web)
+- [Examples](#examples)
+    - [Quick Example](#quick-example)
+    - [TeXView Document Example](#texview-document-example)
+      - [TeXView Document Example](#texview-document-example-1)
+    - [TeXView Markdown Example](#texview-markdown-example)
+      - [TeXView Markdown Example](#texview-markdown-example-1)
+    - [TeXView Quiz Example](#texview-quiz-example)
+      - [TeXView Quiz Example](#texview-quiz-example-1)
+    - [TeXView Custom Fonts Example](#texview-custom-fonts-example)
+      - [TeXView Custom Fonts Example](#texview-custom-fonts-example-1)
+    - [TeXView Image and Video Example](#texview-image-and-video-example)
+      - [TeXView Image and Video Example](#texview-image-and-video-example-1)
+    - [TeXView InkWell Example](#texview-inkwell-example)
+      - [TeXView InkWell Example](#texview-inkwell-example-1)
+    - [Complete Example](#complete-example)
+      - [Complete Example Code](#complete-example-code)
+- [Application Demo.](#application-demo)
+- [Web Demo.](#web-demo)
+- [Api Changes.](#api-changes)
+- [Api Usage.](#api-usage)
+- [To Do:](#to-do)
+- [Cautions:](#cautions)
 
 # About
 A Flutter Package to render **fully offline** so many types of equations and expressions based on **LaTeX** , **TeX** and **MathML**, most commonly used are as followings:
@@ -52,20 +63,20 @@ Basically it's a flutter dart wrapper around the most powerful JavaScript librar
 ## [Click to Watch Demo on Youtube](https://www.youtube.com/watch?v=YiNbVEXV_NM)
 
 # Screenshots
- Fonts Sample  |Quiz Sample    | TeX Document
-:-------------:|:-------------:|:-------------:
-<img src="https://i.postimg.cc/651PXKYC/screenshot-1.png"/> | <img src="https://i.postimg.cc/wjyGxrGZ/screenshot-2.png"/> | <img src="https://i.postimg.cc/k4cjhP26/screenshot-3.png"/>
+ |                        Fonts Sample                         |                         Quiz Sample                         |                        TeX Document                         |
+ | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+ | <img src="https://i.postimg.cc/651PXKYC/screenshot-1.png"/> | <img src="https://i.postimg.cc/wjyGxrGZ/screenshot-2.png"/> | <img src="https://i.postimg.cc/k4cjhP26/screenshot-3.png"/> |
 
- TeX Document  | Image & Video | InkWell 
-:-------------:|:-------------:|:-------------:
-<img src="https://i.postimg.cc/d0GNryv9/screenshot-4.png"/> | <img src="https://i.postimg.cc/prLswcj0/screenshot-5.png"/> | <img src="https://i.postimg.cc/rwBYDJ6m/screenshot-6.png"/>
+ |                        TeX Document                         |                        Image & Video                        |                           InkWell                           |
+ | :---------------------------------------------------------: | :---------------------------------------------------------: | :---------------------------------------------------------: |
+ | <img src="https://i.postimg.cc/d0GNryv9/screenshot-4.png"/> | <img src="https://i.postimg.cc/prLswcj0/screenshot-5.png"/> | <img src="https://i.postimg.cc/rwBYDJ6m/screenshot-6.png"/> |
 
 # How to use?
 **1:** Add flutter_tex latest  [![pub package](https://img.shields.io/pub/v/flutter_tex.svg)](https://pub.dev/packages/flutter_tex) version under dependencies to your package's pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_tex: ^4.0.3+1
+  flutter_tex: ^4.0.6
 ``` 
 
 **2:** You can install packages from the command line:
@@ -167,7 +178,7 @@ TeXView(
       borderRadius: TeXViewBorderRadius.all(25),
       border: TeXViewBorder.all(TeXViewBorderDecoration(
           borderColor: Colors.blue,
-          borderStyle: TeXViewBorderStyle.Solid,
+          borderStyle: TeXViewBorderStyle.solid,
           borderWidth: 5)),
       backgroundColor: Colors.white,
     ),
@@ -219,7 +230,9 @@ You can find web demo at [https://flutter-tex.web.app](https://flutter-tex.web.a
     - `TeXViewColumn` holds a list of `TeXViewWidget` vertically.
     - `TeXViewInkWell` for listening tap events. Its child and id is mandatory.
     - `TeXViewGroup` a group of `TeXViewGroupItem` usually used to create quiz layout.
-            
+    - `TeXViewDetails` like html `<details>`.
+
+
 - `TeXViewStyle()` You can style each and everything using `TeXViewStyle()` or by using custom `CSS` code by `TeXViewStyle.fromCSS()` where you can pass hard coded String containing CSS code. For more information please check the example.
     
 - `renderingEngine:` Render Engine to render TeX (Default is Katex Rendering Engine). Use **Katex RenderingEngine** for fast render and  **MathJax RenderingEngine** for quality render.

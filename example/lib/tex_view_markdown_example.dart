@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 
 String _markdownFlutterTeX = r"""
@@ -175,48 +174,43 @@ For more please see the [Example](https://github.com/shah-xad/flutter_tex/tree/m
 class TeXViewMarkdownExamples extends StatelessWidget {
   final TeXViewRenderingEngine renderingEngine;
 
-  TeXViewMarkdownExamples(
-      {this.renderingEngine = const TeXViewRenderingEngine.katex()});
+  const TeXViewMarkdownExamples(
+      {super.key, this.renderingEngine = const TeXViewRenderingEngine.katex()});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("TeXViewMarkdown"),
+        title: const Text("TeXViewMarkdown"),
       ),
-      body: ListView(
-        physics: ScrollPhysics(),
-        children: <Widget>[
-          TeXView(
-            renderingEngine: renderingEngine,
-            child: TeXViewMarkdown(_markdownFlutterTeX),
-            style: TeXViewStyle(
-              margin: TeXViewMargin.all(10),
-              padding: TeXViewPadding.all(20),
-              elevation: 10,
-              borderRadius: TeXViewBorderRadius.all(25),
-              border: TeXViewBorder.all(
-                TeXViewBorderDecoration(
-                    borderColor: Colors.blue,
-                    borderStyle: TeXViewBorderStyle.Solid,
-                    borderWidth: 5),
-              ),
-              backgroundColor: Colors.white,
-            ),
-            loadingWidgetBuilder: (context) => Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircularProgressIndicator(),
-                  Text("Rendering...")
-                ],
-              ),
-            ),
+      body: TeXView(
+        renderingEngine: renderingEngine,
+        child: TeXViewMarkdown(_markdownFlutterTeX),
+        style: const TeXViewStyle(
+          margin: TeXViewMargin.all(10),
+          padding: TeXViewPadding.all(20),
+          elevation: 10,
+          borderRadius: TeXViewBorderRadius.all(25),
+          border: TeXViewBorder.all(
+            TeXViewBorderDecoration(
+                borderColor: Colors.blue,
+                borderStyle: TeXViewBorderStyle.solid,
+                borderWidth: 5),
           ),
-        ],
+          backgroundColor: Colors.white,
+        ),
+        loadingWidgetBuilder: (context) => const Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Text("Rendering...")
+            ],
+          ),
+        ),
       ),
     );
   }
