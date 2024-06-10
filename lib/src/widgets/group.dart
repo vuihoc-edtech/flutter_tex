@@ -25,30 +25,31 @@ class TeXViewGroup extends TeXViewWidget {
 
   final bool single;
 
+  // doanhnh: lưu các ids được chọn để hiển thị đúng style cho item
   final String? lastSelectedId;
 
   final List<String>? selectedIds;
 
-  const TeXViewGroup(
-      {required this.children,
-      required this.onTap,
-      this.lastSelectedId,
-      this.selectedIds,
-      this.style,
-      this.selectedItemStyle,
-      this.normalItemStyle})
-      : onItemsSelection = null,
+  const TeXViewGroup({
+    required this.children,
+    required this.onTap,
+    this.style,
+    this.selectedItemStyle,
+    this.normalItemStyle,
+    this.lastSelectedId,
+    this.selectedIds,
+  })  : onItemsSelection = null,
         single = true;
 
-  const TeXViewGroup.multipleSelection(
-      {required this.children,
-      required this.onItemsSelection,
-      this.lastSelectedId,
-      this.selectedIds,
-      this.style,
-      this.selectedItemStyle,
-      this.normalItemStyle})
-      : onTap = null,
+  const TeXViewGroup.multipleSelection({
+    required this.children,
+    required this.onItemsSelection,
+    this.style,
+    this.selectedItemStyle,
+    this.normalItemStyle,
+    this.lastSelectedId,
+    this.selectedIds,
+  })  : onTap = null,
         single = false;
 
   @override
@@ -72,9 +73,9 @@ class TeXViewGroup extends TeXViewWidget {
   Map toJson() => {
         'meta': meta().toJson(),
         'data': children.map((child) => child.toJson()).toList(),
-        'lastSelectedId': this.lastSelectedId,
-        'selectedIds': this.selectedIds,
         'single': single,
+        'lastSelectedId': lastSelectedId,
+        'selectedIds': selectedIds,
         'style': style?.initStyle() ?? teXViewDefaultStyle,
         'selectedItemStyle':
             selectedItemStyle?.initStyle() ?? teXViewDefaultStyle,
