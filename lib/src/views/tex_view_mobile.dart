@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:flutter_tex/src/utils/core_utils.dart';
@@ -30,6 +32,9 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
           child: WebViewPlus(
             initialUrl:
                 "packages/flutter_tex/js/${widget.renderingEngine?.name ?? 'katex'}/index.html",
+            gestureRecognizers: {
+              Factory(() => HorizontalDragGestureRecognizer())
+            },
             onWebViewCreated: (controller) {
               _controller = controller;
               widget.onWebViewCreated?.call(controller);
