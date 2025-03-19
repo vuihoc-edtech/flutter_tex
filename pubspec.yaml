@@ -12,7 +12,7 @@ environment:
 
 dependencies:
   webview_flutter_plus: ^0.4.10
-  mime: ^1.0.0
+  mime: ^2.0.0
   markdown: ^6.0.0
 
   flutter:
