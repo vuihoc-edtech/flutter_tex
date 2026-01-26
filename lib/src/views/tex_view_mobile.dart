@@ -6,7 +6,7 @@ import 'package:flutter_tex/src/utils/core_utils.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
-  late WebViewPlusController _controller;
+  late WebViewControllerPlus _controller;
 
   double _height = minHeight;
   String? _lastData;
@@ -14,6 +14,39 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewControllerPlus()
+      ..loadFlutterAsset(
+          "packages/flutter_tex/js/${widget.renderingEngine?.name ?? 'katex'}/index.html")
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..addJavaScriptChannel(
+        'TeXViewRenderedCallback',
+        onMessageReceived: (jm) {
+          final height = double.tryParse(jm.message);
+          if (height != null && _height != height) {
+            setState(() {
+              _height = height;
+            });
+            widget.onRenderFinished?.call(height);
+          }
+        },
+      )
+      ..addJavaScriptChannel(
+        'OnTapCallback',
+        onMessageReceived: (jm) {
+          widget.child.onTapCallback(jm.message);
+        },
+      )
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageFinished: (url) {
+          _pageLoaded = true;
+          _initTeXView();
+        },
+      ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,45 +61,19 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
           : 0,
       children: <Widget>[
         SizedBox(
-          height: _height,
-          child: WebViewPlus(
-            initialUrl:
-                "packages/flutter_tex/js/${widget.renderingEngine?.name ?? 'katex'}/index.html",
-            gestureRecognizers: {
-              Factory(() => HorizontalDragGestureRecognizer())
-            },
-            onWebViewCreated: (controller) {
-              _controller = controller;
-              widget.onWebViewCreated?.call(controller);
-            },
-            onPageFinished: (message) {
-              _pageLoaded = true;
-              _initTeXView();
-            },
-            initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
-            navigationDelegate: widget.navigationDelegate,
-            allowsInlineMediaPlayback: true,
-            javascriptChannels: {
-              JavascriptChannel(
-                  name: 'TeXViewRenderedCallback',
-                  onMessageReceived: (jm) async {
-                    final height = double.tryParse(jm.message);
-                    if (height != null && _height != height) {
-                      setState(() {
-                        _height = height;
-                      });
-                      widget.onRenderFinished?.call(height);
-                    }
-                  }),
-              JavascriptChannel(
-                  name: 'OnTapCallback',
-                  onMessageReceived: (jm) {
-                    widget.child.onTapCallback(jm.message);
-                  })
-            },
-            javascriptMode: JavascriptMode.unrestricted,
-          ),
-        ),
+            height: _height,
+            child: WebViewWidget(
+              controller: _controller,
+              gestureRecognizers: {
+                Factory(() => HorizontalDragGestureRecognizer())
+              },
+            )
+            // child: WebViewPlus(
+
+            //   initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+            //   allowsInlineMediaPlayback: true,
+
+            ),
         widget.loadingWidgetBuilder?.call(context) ?? const SizedBox.shrink()
       ],
     );
@@ -75,8 +82,8 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
   void _initTeXView() {
     if (_pageLoaded && getRawData(widget) != _lastData) {
       if (widget.loadingWidgetBuilder != null) _height = minHeight;
-      _controller.webViewController
-          .runJavascript("initView(${getRawData(widget)})");
+      _controller.runJavaScript(
+          "try { initView(${getRawData(widget)}) } catch (e) { console.error(e) }");
       _lastData = getRawData(widget);
     }
   }
