@@ -1,3 +1,5 @@
+import 'package:design_system/gen/assets.gen.dart';
+import 'package:design_system/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 
@@ -15,29 +17,36 @@ class TeXViewFontsExamples extends StatelessWidget {
         title: const Text("TeXView Fonts"),
       ),
       body: TeXView(
-          fonts: const [
-            TeXViewFont(fontFamily: 'army', src: 'fonts/Army.ttf'),
-            TeXViewFont(fontFamily: 'budhrg', src: 'fonts/Budhrg.ttf'),
-            TeXViewFont(fontFamily: 'celtg', src: 'fonts/CELTG.ttf'),
-            TeXViewFont(fontFamily: 'hillock', src: 'fonts/hillock.ttf'),
-            TeXViewFont(fontFamily: 'intimacy', src: 'fonts/intimacy.ttf'),
-            TeXViewFont(
+          fonts: [
+            const TeXViewFont(fontFamily: 'army', src: 'fonts/Army.ttf'),
+            const TeXViewFont(fontFamily: 'budhrg', src: 'fonts/Budhrg.ttf'),
+            const TeXViewFont(fontFamily: 'celtg', src: 'fonts/CELTG.ttf'),
+            const TeXViewFont(fontFamily: 'hillock', src: 'fonts/hillock.ttf'),
+            const TeXViewFont(
+                fontFamily: 'intimacy', src: 'fonts/intimacy.ttf'),
+            const TeXViewFont(
                 fontFamily: 'sansation_light', src: 'fonts/SansationLight.ttf'),
-            TeXViewFont(fontFamily: 'slenmini', src: 'fonts/slenmini.ttf'),
-            TeXViewFont(
+            const TeXViewFont(
+                fontFamily: 'slenmini', src: 'fonts/slenmini.ttf'),
+            const TeXViewFont(
                 fontFamily: 'subaccuz_regular',
                 src: 'fonts/SubaccuzRegular.ttf'),
+            TeXViewFont(
+              fontFamily: DSFonts.beVietnamPro,
+              src: DSAssets.fonts.beVietnamProRegular,
+            ),
           ],
           renderingEngine: renderingEngine,
           child: TeXViewColumn(children: [
-            _teXViewWidget("Army", 'army'),
-            _teXViewWidget("Budhrg", 'budhrg'),
-            _teXViewWidget("CELTG", 'celtg'),
-            _teXViewWidget("Hillock", 'hillock'),
-            _teXViewWidget("intimacy", 'intimacy'),
-            _teXViewWidget("Sansation Light", 'sansation_light'),
-            _teXViewWidget("Slenmini", 'slenmini'),
-            _teXViewWidget("Subaccuz Regular'", 'subaccuz_regular')
+            _teXViewWidget("Subaccuz Regular", 'army'),
+            _teXViewWidget("Subaccuz Regular", 'budhrg'),
+            _teXViewWidget("Subaccuz Regular", 'celtg'),
+            _teXViewWidget("Subaccuz Regular", 'hillock'),
+            _teXViewWidget("Subaccuz Regular", 'intimacy'),
+            _teXViewWidget("Subaccuz Regular", 'sansation_light'),
+            _teXViewWidget("Subaccuz Regular", 'slenmini'),
+            _teXViewWidget("Subaccuz Regular", 'subaccuz_regular'),
+            _teXViewWidget("Subaccuz Regular", DSFonts.beVietnamPro),
           ]),
           style: const TeXViewStyle(
             margin: TeXViewMargin.all(10),
@@ -51,12 +60,12 @@ class TeXViewFontsExamples extends StatelessWidget {
             ),
             backgroundColor: Colors.white,
           ),
-          loadingWidgetBuilder: (context) => Center(
+          loadingWidgetBuilder: (context) => const Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
+                  children: <Widget>[
                     CircularProgressIndicator(),
                     Text("Rendering...")
                   ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +47,10 @@ class TeXViewState extends State<TeXView> with AutomaticKeepAliveClientMixin {
           _pageLoaded = true;
           _initTeXView();
         },
-      ));
+      ))
+      ..setOnConsoleMessage((message) {
+        log("flutter_tex: ${message.message}");
+      });
   }
 
   @override
